@@ -5,11 +5,21 @@ class PaperStreamApp {
         this.papers = [];
         this.lastUpdate = localStorage.getItem('lastUpdate') || null;
         
+        // Magic UI components
+        this.magicUI = {
+            textShimmer: null,
+            particles: null,
+            animatedList: null,
+            shimmerButtons: [],
+            warpBackground: null
+        };
+
         this.initializeElements();
         this.bindEvents();
         this.loadTags();
         this.registerServiceWorker();
-        
+        this.initializeMagicUI();
+
         // Load papers if we have tags
         if (this.tags.length > 0) {
             this.loadPapers();
@@ -148,16 +158,22 @@ class PaperStreamApp {
 
     renderPapers() {
         if (this.papers.length === 0) {
-            this.elements.papersContainer.innerHTML = `
+            const noPapersHTML = `
                 <div class="welcome-message">
                     <h2>No papers found</h2>
                     <p>Try adjusting your research interests or check back later for new papers.</p>
                 </div>
             `;
+            
+            if (this.magicUI.animatedList) {
+                this.magicUI.animatedList.updateItems([noPapersHTML]);
+            } else {
+                this.elements.papersContainer.innerHTML = noPapersHTML;
+            }
             return;
         }
 
-        this.elements.papersContainer.innerHTML = this.papers.map(paper => `
+        const papersHTML = this.papers.map(paper => `
             <div class="paper-card">
                 <h3 class="paper-title">
                     <a href="${paper.url}" target="_blank" rel="noopener noreferrer">
@@ -172,7 +188,13 @@ class PaperStreamApp {
                 </div>
                 <div class="paper-abstract">${this.escapeHtml(paper.abstract)}</div>
             </div>
-        `).join('');
+        `);
+
+        if (this.magicUI.animatedList) {
+            this.magicUI.animatedList.updateItems(papersHTML);
+        } else {
+            this.elements.papersContainer.innerHTML = papersHTML.join('');
+        }
     }
 
     showWelcomeMessage() {
@@ -215,6 +237,66 @@ class PaperStreamApp {
                 console.log('Service Worker registration failed:', error);
             }
         }
+    }
+
+    initializeMagicUI() {
+        // Initialize TextShimmer for main title
+        const mainTitle = document.getElementById('main-title');
+        if (mainTitle && window.TextShimmer) {
+            this.magicUI.textShimmer = new TextShimmer(mainTitle, {
+                duration: 3000,
+                colors: ['#ffffff', '#e0e7ff', '#c7d2fe', '#ffffff'],
+                intensity: 0.6
+            });
+        }
+
+        // Initialize Particles for background
+        const app = document.getElementById('app');
+        if (app && window.Particles) {
+            this.magicUI.particles = new Particles(app, {
+                count: 30,
+                speed: 0.5,
+                size: 2,
+                color: '#ffffff',
+                opacity: 0.3,
+                connectionDistance: 80,
+                showConnections: true
+            });
+        }
+
+        // Initialize WarpBackground
+        if (app && window.WarpBackground) {
+            this.magicUI.warpBackground = new WarpBackground(app, {
+                intensity: 0.05,
+                speed: 0.5,
+                colors: ['#2563eb', '#3b82f6', '#60a5fa']
+            });
+        }
+
+        // Initialize AnimatedList for papers container
+        const papersContainer = document.getElementById('papers-container');
+        if (papersContainer && window.AnimatedList) {
+            this.magicUI.animatedList = new AnimatedList(papersContainer, {
+                animationDuration: 400,
+                staggerDelay: 100,
+                animationType: 'fadeInUp'
+            });
+        }
+
+        // Initialize ShimmerButtons for all buttons with shimmer-btn class
+        const shimmerButtons = document.querySelectorAll('.shimmer-btn');
+        shimmerButtons.forEach(button => {
+            if (window.ShimmerButton) {
+                const shimmerBtn = new ShimmerButton(button, {
+                    shimmerColor: '#ffffff',
+                    shimmerDuration: 1200,
+                    shimmerIntensity: 0.4,
+                    hoverEffect: true,
+                    clickEffect: true
+                });
+                this.magicUI.shimmerButtons.push(shimmerBtn);
+            }
+        });
     }
 }
 

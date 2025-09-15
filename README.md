@@ -26,6 +26,9 @@ A progressive web application (PWA) that streams recent academic papers related 
 - **🎨 Responsive Design**: Works on desktop, tablet, and mobile
 - **⚙️ Service Worker**: Offline functionality and caching
 - **🕒 Scheduled Updates**: Automated periodic cache updates
+- **✨ Magic UI Components**: Enhanced visual effects and animations
+- **🎭 Glassmorphism Design**: Modern UI with backdrop blur effects
+- **🎪 Interactive Animations**: Smooth transitions and hover effects
 
 ## Screenshots
 
@@ -96,6 +99,27 @@ Retrieve papers based on research interests.
 ### GET /api/health
 Check API health and cache status.
 
+## ✨ Magic UI Integration
+
+The Paper Stream app now includes custom Magic UI components for enhanced visual effects:
+
+- **TextShimmer**: Animated shimmer effects on the main title
+- **Particles**: Dynamic background particle system with connections
+- **AnimatedList**: Smooth animations for paper cards with staggered effects
+- **ShimmerButton**: Interactive shimmer effects on all buttons
+- **WarpBackground**: Subtle warping background gradient
+
+These components are automatically initialized and provide a modern, engaging user experience while maintaining excellent performance.
+
+## 🎨 Enhanced UI Design
+
+The application features:
+- Glassmorphism design with backdrop blur effects
+- Gradient backgrounds and smooth transitions
+- Responsive animations and hover effects
+- Modern card-based layout with enhanced shadows
+- Improved color scheme and typography
+
 ## Architecture
 
 ### Frontend (PWA)
@@ -103,6 +127,7 @@ Check API health and cache status.
 - **Service Worker**: Offline functionality and caching
 - **LocalStorage**: User preferences persistence
 - **Responsive Design**: Mobile-first approach
+- **Magic UI Components**: Custom animated components for enhanced UX
 
 ### Backend (Node.js)
 - **Express.js**: RESTful API server
@@ -136,13 +161,26 @@ paper-stream/
 │   ├── app.js             # Frontend JavaScript
 │   ├── styles.css         # Responsive CSS
 │   ├── service-worker.js  # PWA service worker
-│   └── manifest.json      # PWA manifest
+│   ├── manifest.json      # PWA manifest
+│   └── components/        # Magic UI components
+│       ├── text-shimmer.js
+│       ├── particles.js
+│       ├── animated-list.js
+│       ├── shimmer-button.js
+│       ├── warp-background.js
+│       └── README.md
 ├── server/                # Backend API
 │   ├── index.js           # Express server
 │   ├── paperAggregator.js # Multi-source paper fetching
 │   ├── cacheManager.js    # Caching system
 │   └── mockPaperSource.js # Mock data for demo
 ├── tests/                 # Test files
+├── docs/                  # Documentation
+│   ├── architecture.md
+│   ├── development-plan.md
+│   ├── ui-style-guide.md
+│   ├── logging-system.md
+│   └── README.md
 ├── cache/                 # File cache directory (auto-created)
 └── package.json           # Dependencies and scripts
 ```

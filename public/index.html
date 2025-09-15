@@ -13,18 +13,18 @@
 <body>
     <div id="app">
         <header class="header">
-            <h1>📄 Paper Stream</h1>
-            <button id="settings-btn" class="btn-secondary">⚙️ Settings</button>
+            <h1 id="main-title">📄 Paper Stream</h1>
+            <button id="settings-btn" class="btn-secondary shimmer-btn">⚙️ Settings</button>
         </header>
 
         <div id="settings-panel" class="settings-panel hidden">
             <h2>Research Interests</h2>
             <div class="tags-input">
                 <input type="text" id="tag-input" placeholder="Add research tag (e.g., machine learning, biology)">
-                <button id="add-tag-btn" class="btn-primary">Add</button>
+                <button id="add-tag-btn" class="btn-primary shimmer-btn">Add</button>
             </div>
             <div id="tags-list" class="tags-list"></div>
-            
+
             <div class="toggle-group">
                 <label class="toggle">
                     <input type="checkbox" id="include-preprints" checked>
@@ -32,10 +32,10 @@
                     Include Pre-prints
                 </label>
             </div>
-            
+
             <div class="actions">
-                <button id="refresh-feed-btn" class="btn-primary">Refresh Feed</button>
-                <button id="close-settings-btn" class="btn-secondary">Close</button>
+                <button id="refresh-feed-btn" class="btn-primary shimmer-btn">Refresh Feed</button>
+                <button id="close-settings-btn" class="btn-secondary shimmer-btn">Close</button>
             </div>
         </div>
 
@@ -47,9 +47,9 @@
             
             <div id="error" class="error hidden">
                 <p>Error loading papers. Please try again.</p>
-                <button id="retry-btn" class="btn-primary">Retry</button>
+                <button id="retry-btn" class="btn-primary shimmer-btn">Retry</button>
             </div>
-            
+
             <div id="papers-container" class="papers-container">
                 <div class="welcome-message">
                     <h2>Welcome to Paper Stream!</h2>
@@ -59,6 +59,13 @@
         </main>
     </div>
 
+    <!-- Magic UI Components -->
+    <script src="components/text-shimmer.js"></script>
+    <script src="components/particles.js"></script>
+    <script src="components/animated-list.js"></script>
+    <script src="components/shimmer-button.js"></script>
+    <script src="components/warp-background.js"></script>
+    
     <script src="app.js"></script>
 </body>
 </html>

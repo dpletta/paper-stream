@@ -9,7 +9,9 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f8fafc;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Layout */
@@ -20,13 +22,17 @@ body {
 }
 
 .header {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: rgba(37, 99, 235, 0.95);
+    backdrop-filter: blur(10px);
     color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 10;
 }
 
 .header h1 {
@@ -40,6 +46,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    position: relative;
+    z-index: 5;
 }
 
 /* Buttons */
@@ -54,22 +62,28 @@ body {
 }
 
 .btn-primary {
-    background-color: #2563eb;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
     color: white;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #1d4ed8;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background: rgba(255,255,255,0.1);
     color: white;
     border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255,255,255,0.2);
 }
 
 /* Settings Panel */
@@ -79,13 +93,15 @@ body {
     right: 0;
     width: 400px;
     height: 100vh;
-    background: white;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
     padding: 2rem;
     transform: translateX(100%);
     transition: transform 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
+    border-left: 1px solid rgba(255,255,255,0.2);
 }
 
 .settings-panel:not(.hidden) {
@@ -204,9 +220,11 @@ body {
 .welcome-message {
     text-align: center;
     padding: 3rem 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .welcome-message h2 {
@@ -219,16 +237,32 @@ body {
 }
 
 .paper-card {
-    background: white;
-    border-radius: 8px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-left: 4px solid #2563eb;
-    transition: box-shadow 0.2s;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.paper-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.3), transparent);
 }
 
 .paper-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    border-left-color: #3b82f6;
 }
 
 .paper-title {
