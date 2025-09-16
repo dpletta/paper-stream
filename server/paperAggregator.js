@@ -75,26 +75,52 @@ class PaperAggregator {
         const seenTitles = new Set();
         const seenArxivIds = new Set();
         const seenDois = new Set();
+        const seenUrls = new Set();
         
         return papers.filter(paper => {
             // Normalize title for comparison
-            const normalizedTitle = paper.title.toLowerCase()
-                .replace(/[^\w\s]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
+            const normalizedTitle = this.normalizeTitle(paper.title);
             
-            // Check for duplicates by title, arXiv ID, or DOI
+            // Check for exact duplicates by title, arXiv ID, DOI, or URL
             if (seenTitles.has(normalizedTitle)) return false;
             if (paper.arxivId && seenArxivIds.has(paper.arxivId)) return false;
             if (paper.doi && seenDois.has(paper.doi)) return false;
+            if (paper.url && seenUrls.has(paper.url)) return false;
+            
+            // Check for fuzzy title matches (similar papers with slight variations)
+            const isSimilar = Array.from(seenTitles).some(seenTitle => 
+                this.calculateSimilarity(normalizedTitle, seenTitle) > 0.85
+            );
+            
+            if (isSimilar) return false;
             
             // Add to seen sets
             seenTitles.add(normalizedTitle);
             if (paper.arxivId) seenArxivIds.add(paper.arxivId);
             if (paper.doi) seenDois.add(paper.doi);
+            if (paper.url) seenUrls.add(paper.url);
             
             return true;
         });
+    }
+
+    normalizeTitle(title) {
+        return title.toLowerCase()
+            .replace(/[^\w\s]/g, '') // Remove punctuation
+            .replace(/\s+/g, ' ') // Normalize whitespace
+            .replace(/\b(the|a|an|and|or|but|in|on|at|to|for|of|with|by)\b/g, '') // Remove common words
+            .trim();
+    }
+
+    calculateSimilarity(str1, str2) {
+        // Simple Jaccard similarity for word-based comparison
+        const words1 = new Set(str1.split(' ').filter(word => word.length > 2));
+        const words2 = new Set(str2.split(' ').filter(word => word.length > 2));
+        
+        const intersection = new Set([...words1].filter(word => words2.has(word)));
+        const union = new Set([...words1, ...words2]);
+        
+        return intersection.size / union.size;
     }
 
     async updateCache() {

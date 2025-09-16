@@ -14,7 +14,13 @@
     <div id="app">
         <header class="header">
             <h1 id="main-title">📄 Paper Stream</h1>
-            <button id="settings-btn" class="btn-secondary shimmer-btn">⚙️ Settings</button>
+            <div class="header-controls">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search papers..." class="search-input">
+                    <button id="search-btn" class="btn-search shimmer-btn">🔍</button>
+                </div>
+                <button id="settings-btn" class="btn-secondary shimmer-btn">⚙️ Settings</button>
+            </div>
         </header>
 
         <div id="settings-panel" class="settings-panel hidden">
@@ -33,8 +39,42 @@
                 </label>
             </div>
 
+            <div class="filter-section">
+                <h3>Filters</h3>
+                
+                <div class="filter-group">
+                    <label for="source-filter">Source:</label>
+                    <select id="source-filter" class="filter-select">
+                        <option value="all">All Sources</option>
+                        <option value="arXiv">arXiv</option>
+                        <option value="OpenAlex">OpenAlex</option>
+                        <option value="Semantic Scholar">Semantic Scholar</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="date-range">Published:</label>
+                    <select id="date-range" class="filter-select">
+                        <option value="all">All Time</option>
+                        <option value="week">Past Week</option>
+                        <option value="month">Past Month</option>
+                        <option value="year">Past Year</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by" class="filter-select">
+                        <option value="date">Publication Date</option>
+                        <option value="relevance">Relevance</option>
+                        <option value="source">Source</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="actions">
                 <button id="refresh-feed-btn" class="btn-primary shimmer-btn">Refresh Feed</button>
+                <button id="view-bookmarks-btn" class="btn-secondary shimmer-btn">📚 Bookmarks</button>
                 <button id="close-settings-btn" class="btn-secondary shimmer-btn">Close</button>
             </div>
         </div>
