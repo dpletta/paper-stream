@@ -26,6 +26,7 @@ class PaperStreamApp {
         this.loadTags();
         this.registerServiceWorker();
         this.initializeMagicUI();
+        this.initializeIOSFeatures();
 
         // Load papers if we have tags
         if (this.tags.length > 0) {
@@ -515,6 +516,95 @@ class PaperStreamApp {
                 console.log('Service Worker registration failed:', error);
             }
         }
+    }
+
+    initializeIOSFeatures() {
+        // iOS-specific initializations
+        this.setupIOSViewport();
+        this.setupIOSTouchEvents();
+        this.setupIOSPWAInstall();
+        this.setupIOSKeyboardHandling();
+    }
+
+    setupIOSViewport() {
+        // Fix iOS viewport height issues
+        const setViewportHeight = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        };
+        
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(setViewportHeight, 100);
+        });
+    }
+
+    setupIOSTouchEvents() {
+        // Improve touch interactions for iOS
+        document.addEventListener('touchstart', (e) => {
+            // Prevent iOS Safari bounce effect
+            if (e.target === document.body) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Add touch feedback to buttons
+        const buttons = document.querySelectorAll('button, .btn-primary, .btn-secondary');
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 100);
+            });
+        });
+    }
+
+    setupIOSPWAInstall() {
+        // Handle iOS PWA installation prompts
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            this.showInstallPrompt();
+        });
+
+        // Detect if running as PWA on iOS
+        if (window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
+        }
+    }
+
+    showInstallPrompt() {
+        // Show custom install prompt for iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isInStandaloneMode = window.navigator.standalone === true;
+        
+        if (isIOS && !isInStandaloneMode) {
+            this.showNotification(
+                'Install Paper Stream',
+                'Tap the share button and select "Add to Home Screen" to install this app.',
+                'info'
+            );
+        }
+    }
+
+    setupIOSKeyboardHandling() {
+        // Handle iOS keyboard appearance
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                // Scroll input into view on iOS
+                setTimeout(() => {
+                    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
+        });
     }
 
     initializeMagicUI() {

@@ -11,8 +11,48 @@ body {
     color: #333;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100); /* iOS viewport height fix */
     overflow-x: hidden;
     transition: all 0.3s ease;
+    /* iOS Safari specific fixes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* PWA mode styles */
+.pwa-mode .header {
+    padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+.pwa-mode body {
+    /* Additional PWA-specific styles */
+    background-attachment: fixed;
+}
+
+/* Enable text selection for content areas */
+.paper-card, .paper-title, .paper-abstract, .search-input, .tags-input input {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* iOS safe area support */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+    }
+    
+    .header {
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
 }
 
 /* Layout */
@@ -66,6 +106,12 @@ body {
     font-size: 0.9rem;
     width: 200px;
     outline: none;
+    /* iOS Safari specific fixes */
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 0;
+    /* Prevent zoom on focus for iOS */
+    font-size: 16px;
 }
 
 .search-input::placeholder {
@@ -110,6 +156,30 @@ body {
     font-size: 0.9rem;
     font-weight: 500;
     transition: all 0.2s;
+    /* iOS touch improvements */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Ensure minimum touch target size */
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* iOS-specific button active states */
+.btn-primary:active, .btn-secondary:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+.btn-search:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
 }
 
 .btn-primary {
@@ -175,7 +245,10 @@ body {
     padding: 0.5rem;
     border: 1px solid #d1d5db;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 16px; /* Prevent zoom on iOS */
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    background: white;
 }
 
 .tags-list {
@@ -288,10 +361,18 @@ body {
     padding: 0.5rem;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 16px; /* Prevent zoom on iOS */
     background: white;
     cursor: pointer;
     transition: all 0.2s ease;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    /* Add custom arrow for iOS */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1rem;
+    padding-right: 2rem;
 }
 
 .filter-select:hover {
@@ -654,6 +735,9 @@ body {
         padding: 1rem;
         flex-direction: column;
         gap: 1rem;
+        /* iOS safe area support */
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
     }
     
     .header-controls {
@@ -668,15 +752,24 @@ body {
     
     .search-input {
         width: 100%;
+        font-size: 16px; /* Prevent zoom on iOS */
     }
     
     .main {
         padding: 1rem;
+        /* iOS safe area support */
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
     }
     
     .settings-panel {
         width: 100%;
         right: 0;
+        /* iOS safe area support */
+        padding-left: max(2rem, env(safe-area-inset-left));
+        padding-right: max(2rem, env(safe-area-inset-right));
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
     }
     
     .tags-input {
